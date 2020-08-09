@@ -1,0 +1,142 @@
+
+------------------------------------------------Tablas-----------------------------------------------------------
+ DATABASE HOMESALES;
+
+CREATE TABLE CLIENTES(
+CLIENTE_ID INT NOT NULL AUTO_INCREMENT,
+CLIENTE_NOMBRE VARCHAR(100) NOT NULL,
+CLIENTE_TEL VARCHAR(30),
+CLIENTE_EMAIL VARCHAR(50),
+PRIMARY KEY(CLIENTE_ID)
+);
+
+DROP TABLE IF EXISTS COMENTARIOS;
+CREATE TABLE COMENTARIOS(
+MENSAJE_ID INT NOT NULL,
+COMENTARIO_ID INT NOT NULL,
+CLIENTE_ID INT NOT NULL,
+COMENTARIO_FECHA TIMESTAMP NOT NULL,
+COMENTARIO TEXT,
+PRIMARY KEY(COMENTARIO_ID, CLIENTE_ID),
+FOREIGN KEY(CLIENTE_ID) REFERENCES CLIENTES(CLIENTE_ID)
+);
+
+DROP TABLE IF EXISTS CLASIFICACION;
+CREATE TABLE CLASIFICACION(
+CLASIFICACION_ID INT NOT NULL AUTO_INCREMENT,
+CLIENTE_ID INT NOT NULL,
+CLASIFICACION VARCHAR(30) NOT NULL,
+
+PRIMARY KEY(CLASIFICACION_ID),
+FOREIGN KEY(CLIENTE_ID) REFERENCES COMENTARIOS(CLIENTE_ID)
+);
+
+
+------------------------------------------------------------------------------------------------------------------------------
+DROP PROCEDURE IF EXISTS SP_BITACORA;
+DELIMITER //
+CREATE PROCEDURE SP_BITACORA()
+BEGIN
+--declaracion de variables
+DECLARE VAL_LASTID INT DEFAULT 0;
+DECLARE FIN INT DEFAULT 0;
+DECLARE VAL_COM TEXT(100);
+DECLARE VAL_IDMEN INT;
+DECLARE VAL_IDCLI INT;
+DECLARE ultimo INT;
+
+--en este cursor se jala el id del mensaje y se hace un conteo de comentario_id, e
+--esa cuenta me dara el id del ultimo mensaje del usuario
+DECLARE CUR CURSOR FOR 
+	SELECT MENSAJE_ID,count(COMENTARIO_ID),CLIENTE_ID 
+	FROM COMENTARIOS group by MENSAJE_ID;
+
+--declaracion del handler
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET FIN = 1;
+OPEN CUR;
+REPEAT
+FETCH CUR INTO VAL_IDMEN,VAL_LASTID,VAL_IDCLI;
+
+--aqui se inicializa la variable val_com con el ultimo comentario de cada usuario
+SET VAL_COM = (SELECT COMENTARIO 
+FROM COMENTARIOS 
+WHERE MENSAJE_ID=VAL_IDMEN 
+AND COMENTARIO_ID=VAL_LASTID 
+AND CLIENTE_ID =VAL_IDCLI);
+SET VAL_COM = LOWER(VAL_COM);
+
+--aqui se se comparan las cadenas predefinidas con la variable para darle la clasificacion
+IF (VAL_COM LIKE 'quiere conocer el fraccionamiento' OR VAL_COM LIKE 'quiere visitar la casa modelo') THEN
+INSERT INTO CLASIFICACION (CLIENTE_ID, CLASIFICACION, ultimo_comentario) VALUES (VAL_IDCLI,'VERDE', VAL_COM);
+ELSEIF (VAL_COM LIKE 'quiere que  llamen' OR VAL_COM LIKE 'quiere saber si califica') THEN
+INSERT INTO CLASIFICACION (CLIENTE_ID, CLASIFICACION, ultimo_comentario) VALUES (VAL_IDCLI,'AMARILLO', VAL_COM);
+ELSEIF (VAL_COM LIKE 'nos llama despues' OR VAL_COM LIKE 'preguntara a su esposa' ) THEN
+INSERT INTO CLASIFICACION (CLIENTE_ID, CLASIFICACION, ultimo_comentario) VALUES (VAL_IDCLI,'ROJO', VAL_COM);
+ELSE
+INSERT INTO CLASIFICACION (CLIENTE_ID, CLASIFICACION, ultimo_comentario) VALUES (VAL_IDCLI,'BLANCO', VAL_COM);
+END IF;
+
+UNTIL FIN = 1 END REPEAT;
+CLOSE CUR;
+
+--esta es la mexicanada que comentaba, no se por que cuando se activaba el procedure, siempre agregaba
+--dos veces el ultimo registro en la tabla clasificacion, aqui lo que hago es borrar ese repetido
+--de igual manera los procedimientos solo se usan una vez
+set ultimo = (SELECT CLASIFICACION_ID FROM CLASIFICACION ORDER BY CLASIFICACION_ID DESC LIMIT 1);
+DELETE FROM CLASIFICACION WHERE CLASIFICACION_ID = ultimo;
+END
+//
+DELIMITER ;
+
+
+------------------------------------------------- VISTA ----------------------------------------------------------------------------
+DROP VIEW IF EXISTS MOSTRAR_CLASS;
+CREATE VIEW MOSTRAR_CLASS AS
+SELECT CLASIFICACION.CLIENTE_ID,CLIENTES.CLIENTE_NOMBRE,ULTIMO_COMENTARIO, CLASIFICACION 
+FROM CLASIFICACION 
+INNER JOIN CLIENTES 
+ON CLASIFICACION.CLIENTE_ID=CLIENTES.CLIENTE_ID;
+
+---------------------------------------------- TRIGGER ---------------------------------------------------------
+DROP TRIGGER IF EXISTS TG_BITACORA_AI;
+DELIMITER //
+CREATE TRIGGER TG_BITACORA_AI
+AFTER INSERT ON COMENTARIOS
+FOR EACH ROW
+BEGIN
+--declaracion de variables
+DECLARE VAL_COM TEXT;
+DECLARE IDCLI INT;
+DECLARE VAL_IDMEN INT;
+DECLARE LASTID INT;
+
+--inicializo la variable val_com que almacenara el nuevo comentario insertado
+SET VAL_COM = (SELECT COMENTARIO FROM COMENTARIOS 
+WHERE MENSAJE_ID = NEW.MENSAJE_ID  
+AND COMENTARIO_ID = NEW.COMENTARIO_ID 
+AND CLIENTE_ID=NEW.CLIENTE_ID);
+
+--lo mismo con idcli solo que aqui almaceno el id del cliente
+SET IDCLI = (SELECT CLIENTE_ID FROM COMENTARIOS 
+WHERE MENSAJE_ID = NEW.MENSAJE_ID  
+AND COMENTARIO_ID = NEW.COMENTARIO_ID 
+AND CLIENTE_ID=NEW.CLIENTE_ID);
+
+
+--con estas variables se crea la estrcutura del if con el cual se llenará la tabla clasificacion
+IF (VAL_COM LIKE 'quiere conocer el fraccionamiento' OR VAL_COM LIKE 'quiere visitar la casa modelo') THEN
+UPDATE CLASIFICACION SET CLASIFICACION='VERDE', ULTIMO_COMENTARIO = NEW.COMENTARIO where CLIENTE_ID = IDCLI ;
+ELSEIF (VAL_COM LIKE 'quiere que  llamen' OR VAL_COM LIKE 'quiere saber si califica') THEN
+UPDATE CLASIFICACION SET CLASIFICACION='AMARILLO', ULTIMO_COMENTARIO = NEW.COMENTARIO where CLIENTE_ID = IDCLI ;
+ELSEIF (VAL_COM LIKE 'nos llama despues' OR VAL_COM LIKE 'preguntara a su esposa' ) THEN
+UPDATE CLASIFICACION SET CLASIFICACION='ROJO', ULTIMO_COMENTARIO = NEW.COMENTARIO where CLIENTE_ID = IDCLI ;
+ELSE
+UPDATE CLASIFICACION SET CLASIFICACION='BLANCO', ULTIMO_COMENTARIO = NEW.COMENTARIO where CLIENTE_ID = IDCLI ;
+END IF;
+
+
+END
+//
+DELIMITER ;
+
+
