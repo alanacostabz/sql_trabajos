@@ -51,7 +51,7 @@ AS avg_posts;
   ORDER BY TOTAL DESC
   LIMIT 5;
 
-  -- 7. Finding Bots - users who have liked every single phto
+-- 7. Finding Bots - users who have liked every single phto
 SELECT  username, count(*) AS num_likes
 FROM USERS
 INNER JOIN likes
