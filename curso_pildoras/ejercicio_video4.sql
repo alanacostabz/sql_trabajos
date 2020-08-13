@@ -14,3 +14,10 @@ ORDER BY NOMBREARTÍCULO DESC;
 SELECT EMPRESA, DIRECCIÓN, POBLACIÓN
 FROM CLIENTES 
 ORDER BY POBLACIÓN, DIRECCIÓN DESC; -- ORDER BY POR DEFAULT ES ASC
+
+
+/* 3. Realizar una consulta que muestre todos los campos de la tabla “Clientes”.
+Ordenar los resultados por el campo “Población” ascendentemente. */
+SELECT * 
+FROM CLIENTES
+ORDER BY POBLACIÓN;
