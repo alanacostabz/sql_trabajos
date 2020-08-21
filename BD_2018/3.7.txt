@@ -1,0 +1,12 @@
+3.7 Empresa ventas de boletos
+Una empresa de venta de entradas para espectáculos quiere informatizar su funcionamiento. El funcionamiento de la empresa es el siguiente:
+
+Cuando un cliente llama por teléfono para comprar unas entradas, se comprueba si el cliente es nuevo, en cuyo caso se almacenará en la base de datos el nombre del cliente, su CURP y su teléfono. Además se le asignará un código de cliente único.
+
+Existen diferentes locales de espectáculos que trabajan con esta empresa. La información de interés de dichos locales es el código de local, el nombre, la dirección, el teléfono y el aforo (capacidad) de dicho local.
+
+En los diferentes locales se dan distintos espectáculos. Hay que tener en cuenta que la empresa quiere tener almacenada la programación de espectáculos de toda la temporada por lo que un espectáculo podrá estar en varios locales a lo largo de la temporada y un local podrá tener también diferentes espectáculos durante la temporada. Es esencial saber las fechas de comienzo y fin de los espectáculos en cada local.
+
+De los espectáculos interesa saber el código de espectáculo, su nombre y el precio por entrada. Hay que tener en cuenta que el precio de un espectáculo puede variar según el local donde se produzca.
+
+Cuando el cliente realiza una compra de entradas se tendrá en cuenta lo siguiente: hay que almacenar la fecha para la que quiere las entradas, en que espectáculo y en cual local, así como el número de entradas que pide. Si un cliente habitual lleva compradas mas de 20 entradas, se le realizará un descuento del 15 %. Por lo tanto, hay que almacenar todas las compras realizadas por un cliente. También hay que comprobar que quedan entradas disponibles. De las compras interesa saber el código de cliente, el número de entradas compradas, la fecha, el código del local y el código del espectáculo.

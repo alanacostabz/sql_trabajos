@@ -1,0 +1,5 @@
+La asistencia total de hoy fue 
+Mon Sep 03 19:20:01 MST 2018
+Hombres: 1
+Mujeres: 3
+niños: 2

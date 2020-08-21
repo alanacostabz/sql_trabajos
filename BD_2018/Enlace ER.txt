@@ -1,0 +1,10 @@
+*Entidad y relacion:
+http://slideplayer.es/slide/9503224/
+
+
+*Jerarquias generalizaciones y especializaciones:
+http://dryvalleycomputer.com/index.php/bases-de-datos/el-modelo-entidadrelacion/55-jerarquias-generalizaciones-y-especializaciones
+
+http://modelosbasesdedatos.blogspot.mx/2013/12/generalizacion-y-especializacion.html
+
+http://www.unirioja.es/cu/arjaime/Temas/03.UML.pdf

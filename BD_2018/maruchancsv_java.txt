@@ -1,0 +1,105 @@
+package maruchancsv;
+
+
+
+import java.io.*;
+
+import java.util.Scanner;
+
+
+
+public class MaruchanCSV {
+
+
+
+    public static void main(String[] args) {
+
+        FileReader archivo;
+
+        String brand = "";
+
+        BufferedReader inputFile = null;
+
+        Scanner sc = new Scanner(System.in);
+
+
+
+        System.out.print("Ingrese nombre de la compañia: ");
+
+        brand = sc.nextLine();
+
+        System.out.println("");
+
+
+
+        try {
+
+            archivo = new FileReader("maruchan.csv");
+
+            inputFile = new BufferedReader(archivo);
+
+        } catch (FileNotFoundException ex) {
+
+            System.out.println("Error al abrir al archivo");
+
+            System.exit(0);
+
+        }
+
+        String registro = null;
+
+
+
+        try {
+
+            while ((registro = inputFile.readLine()) != null) {
+
+                String[] result = registro.split(",");
+
+
+
+                for (int x = 0; x < result.length; x++) {
+
+
+
+                    if (result[1].equalsIgnoreCase("Brand") && result[4].equalsIgnoreCase("Country") || result[1].equalsIgnoreCase(brand)) {
+
+
+
+                        System.out.println(result[0] + "," + result[2] + "," + result[3] + "," + result[5]);
+
+
+
+                        x += 5;
+
+
+
+                    } else if (brand.equalsIgnoreCase("Todas") || brand.equalsIgnoreCase("")) {
+
+                        System.out.println(result[x]);
+
+                    }
+
+
+
+                }
+
+            }
+
+            inputFile.close();
+
+
+
+        } catch (IOException ex) {
+
+            System.out.println("Error al cargar el archivo");
+
+            System.exit(0);
+
+        }
+
+
+
+    }
+
+}

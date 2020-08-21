@@ -1,0 +1,30 @@
+Usuario: curp, correo, nombre, dirección, teléfono, login, password
+
+*****atributo de relacion y compuesto: fecha: año mes dia hora minuto segundo.
+
+Secciones: co_seccion, nombre, descripcion, fecha
+
+Carrito_Compras: id_carrito, fecha***, cantidad_producto, (atributo derivado**** coste)
+
+Productos: id_producto, nombre, descripcion, precio
+
+
+
+
+Periodistas: id_periodistas, nombre, direccion, telefono, no_coberturas
+
+Noticia: id_noticia, fecha, hora, titular, texto, relaciones
+
+Implicados: id_implicado, nombre, fecha de nacimiento, calidad
+
+agenciaNoticia: id_agencia, nombre, añoCreacion
+
+
+Usuario: nombre, correo, nick, login, password
+Avatar: aspecto, nivel, nick
+tipoDeJuego: id_tipo, nombre, descripcion
+Partida: id_partida, password, fecha, hora, nombre, estado
+
+
+
+

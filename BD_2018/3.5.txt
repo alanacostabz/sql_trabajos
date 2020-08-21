@@ -1,0 +1,16 @@
+3.5 Sistema de información catastral
+
+Los ayuntamientos del estado desean mantener información actualizada de las viviendas ubicadas en zonas urbanas. Se desea diseñar una base de datos que incluya las características de las viviendas, su ubicación, propietarios, personas que las habitan, etc. Esta información se utilizará con fines administrativos (impuestos y otros) y estadísticos. Inicialmente sólo se considerará información de las viviendas de manera individual, sin hacer distinción entre pisos que forman parte de un edificio o viviendas unifamiliares.
+
+A finales de año, el ayuntamiento de cada municipio debe cobrar a cada propietario un impuesto por cada vivienda que sea de su propiedad en la actualidad. Así, emite un recibo para cada vivienda donde se incluye el número de registro catastral de la vivienda, la dirección donde se ubica la vivienda (calle, numero y piso), el número de metros cuadrados, el RFC y nombre del propietario (aunque la propiedad de una vivienda puede ser compartida por varias personas, a efectos de cobro de impuestos consideramos sólo a uno de ellos), además del importe de impuesto. Este recibo se le remitirá a la dirección del propietario, que por supuesto no tiene por qué coincidir con la de la vivienda de la que debe pagar el impuesto.
+
+El importe del impuesto de cada vivienda depende de múltiples factores que deben considerarse en su cálculo. Entre ellos están el municipio, la colonia o zona urbana donde se ubica la vivienda; los m2 de la vivienda y el precio de tasación de la vivienda. Para estos efectos cada municipio consta de varias ciudades, de los que hay que mantener su nombre, el área y perímetro y municipio al  que pertenecen; además para identificar cada ciudad se utiliza un código único a nivel regional. Y su vez cada ciudad está dividido en varias colonias o zonas urbanas claramente delimitadas. A la hora de calcular el impuesto debe usarse el precio medio del m2 en esa zona urbana.
+
+El propietario puede realizar el pago del impuesto de dos maneras: en efectivo, dirigiéndose a la tesorería del ayuntamiento una vez que le ha llegado la notificación de que tiene que pagar, o a través de la cuenta bancaria que el propietario haya indicado al ayuntamiento; en este último caso la notificación sólo le indica al propietario que se le va a cobrar el impuesto y en el recibo figurará la cuenta de cargo. No es nuestro objetivo en este momento mantener información de los impuestos pagados o de los morosos.
+
+Por otra parte, cada cierto tiempo desde el gobierno del estado se solicitan una serie de informes destinados a distintas secretarías. La secretaría de desarrollo urbano suele solicitar:
+1) Una lista de todas las zonas urbanas, indicando el precio medio del m2, su nombre, área, perímetro, coordenadas geográficas y el municipio al que pertenecen, ordenados por municipio y ciudad,
+
+2) El mismo listado ordenado por el precio medio del m2 en cada zona urbana y
+
+3) Un listado de las viviendas vacías. La secretaría de desarrollo social por otra parte, solicita un listado de las viviendas habitadas por una única persona de 70 años o más y los datos del barrio donde se ubican.

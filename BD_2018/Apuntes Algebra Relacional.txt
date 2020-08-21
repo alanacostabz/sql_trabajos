@@ -1,0 +1,4 @@
+--obtener productos que incian con letra C
+Selección tnombre Like ‘c%’  ‘%C’ '%C%' otro signo tnombre Articuos
+
+http://ict.udlap.mx/people/carlos/is341/bases04.html

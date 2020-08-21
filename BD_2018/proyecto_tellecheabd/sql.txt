@@ -1,0 +1,133 @@
+
+-- CREATE TABLE IF NOT EXISTS religion(
+--     religion_id serial primary key,
+--     religion_name varchar(15) NOT NULL,
+--     religion_details varchar(100) default 'N/A'
+-- );
+
+-- create table if not exists staff_categories(
+--     staff_category_id serial primary key,
+--     staff_category_description varchar (8) not null check (staff_category_description='enfermera' or staff_category_description= 'doctor'
+--     or staff_category_description = 'limpieza')
+-- );
+
+-- create table if not exists state(
+-- 	state_id serial primary key,
+-- 	state_name varchar (20) not null, 
+-- 	pais_id int not null,
+-- 	CONSTRAINT pais_id_fk FOREIGN KEY (pais_id)
+--          REFERENCES country (pais_id)
+--          ON UPDATE CASCADE ON DELETE SET DEFAULT
+-- )
+
+-- create table if not exists city (
+-- 	city_id serial primary key, 
+-- 	city_name varchar (20) not null,
+-- 	state_id int not null,
+-- 	CONSTRAINT state_id_fk FOREIGN KEY (state_id)
+--           REFERENCES state (state_id)
+--           ON UPDATE CASCADE ON DELETE SET DEFAULT
+-- )
+--select * from bloodbank
+
+-- CREATE TABLE IF NOT EXISTS address(
+--     address_id serial primary key,
+--     building_number int NOT NULL,
+--     street varchar(40) NOT NULL,
+--     city varchar(25) NOT NULL,
+--     postal_code int NOT NULL,
+--     state varchar(25) NOT NULL,
+--     country varchar(25) NOT NULL,
+--     address_details varchar(100) default 'N/A'
+-- );
+
+
+-- CREATE TABLE IF NOT EXISTS medical_condition(
+--     condition_id serial primary key,
+--     condition_name varchar(35) NOT NULL,
+--     condition_description varchar(100) default 'N/A'
+-- );
+
+
+-- CREATE TABLE IF NOT EXISTS medication(
+--     medication_id serial primary key,
+--     medication_name varchar(35) NOT NULL,
+--     medication_description varchar(100) NOT NULL
+-- );
+
+
+--CREATE TABLE IF NOT EXISIST blood_bank(
+--id_bloodbank SERIAL primary key,
+--bloodbank_name varchar(50) not null,
+--bloodbank_details varchar(100) default 'N/A',
+--address_id int NOT NULL,
+--CONSTRAINT address_id_fk FOREIGN KEY (address_id)
+--REFERENCES address(address_id)
+--ON UPDATE CASCADE ON DELETE SET DEFAULT);
+
+
+-- CREATE TABLE IF NOT EXISTS donors(
+--     donor_id SERIAL primary key,
+--     gender varchar(8) NOT NULL CHECK(gender = 'male' OR gender = 'female' OR gender = 'unknown'),
+--     birth_date date NOT NULL,
+--     name varchar(25) NOT NULL,
+--     last_names varchar(35) NOT NULL,
+--     height numeric(3,2) NOT NULL,
+--     weight numeric(5,2) NOT NULL,
+--     nationality varchar(15) NOT NULL,
+--     blood_type varchar(3) NOT NULL CHECK(blood_type = 'O-' OR blood_type = 'O+' OR blood_type = 'A-' OR blood_type = 'A+' OR blood_type = 'B-' OR blood_type = 'B+' OR blood_type = 'AB-' OR blood_type = 'AB+'),
+--     home_num int,
+--     work_num int,
+--     cellphone numeric (10,0) NOT NULL,
+--     allergies varchar(50) default 'N/A',
+--     observations varchar(100) default 'N/A',
+--     address_id int NOT NULL,
+--     id_bloodbank int NOT NULL,
+--     religion_id int NOT NULL,
+--     CONSTRAINT address_id_fk FOREIGN KEY (address_id)
+--         REFERENCES address(address_id)
+--         ON UPDATE CASCADE ON DELETE SET DEFAULT,
+--     CONSTRAINT id_blodbank_fk FOREIGN KEY (id_bloodbank)
+--         REFERENCES bloodbank(id_bloodbank)
+--         ON UPDATE CASCADE ON DELETE SET DEFAULT,
+--     CONSTRAINT religion_code_fk FOREIGN KEY (religion_id)
+--         REFERENCES religion(religion_id)
+--         ON UPDATE CASCADE ON DELETE SET DEFAULT
+-- );
+
+
+-- ALTER SEQUENCE bloodbank_id_bloodbank_seq RESTART WITH 1 
+
+-- create table if not exists staff(
+--     staff_id serial primary key,
+--     gender_staff varchar(8) not null check (gender_staff='male' or gender_staff ='female' or gender_staff ='unknown'),
+--     names_staff varchar(25) not null,
+--     last_names_staff varchar(30) not null,
+--     allergies_staff varchar(50) default 'N/A',
+--     address_id int NOT NULL,
+--     id_bloodbank int NOT NULL,
+--     staff_category_id int not null,
+--     CONSTRAINT staff_address_id foreign key (address_id)
+--         references address(address_id)
+--         on update cascade on delete set default,
+--     CONSTRAINT staff_id_bloodbank foreign key(id_bloodbank)
+--         references bloodbank(id_bloodbank)
+--         on update cascade on delete set default,
+--     CONSTRAINT staff_category_code2 foreign key (staff_category_id)
+--         references staff_categories(staff_category_id)
+--         on update cascade on delete set default
+-- );
+
+-- insert into staff (gender_staff, names_staff, last_names_staff, allergies_staff, )
+
+-- create table if not exists donor_medications(
+--     donor_medications_comments varchar(100) default 'N/A',
+--     donor_id SERIAL NOT NULL,
+--     medication_code int NOT NULL,
+--     CONSTRAINT donor_medications_id foreign key (donor_id)
+--         references donors(donor_id)
+--         on update cascade on delete set default,
+--     CONSTRAINT donor_medications_code foreign key (medication_code)
+--         references medication(medication_id)
+--         on update cascade on delete set default
+-- );
